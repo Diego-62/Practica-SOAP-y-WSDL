@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="GeometriaService"
+             targetNamespace="http://practica.soap/geometria"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://practica.soap/geometria"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- 1. TIPOS: elementos de entrada y salida de cada operación -->
+  <types>
+    <xsd:schema targetNamespace="http://practica.soap/geometria"
+                elementFormDefault="qualified">
+
+      <xsd:element name="AreaRectangulo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="base" type="xsd:double"/>
+            <xsd:element name="altura" type="xsd:double"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AreaRectanguloResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="area" type="xsd:double"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="PerimetroRectangulo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="base" type="xsd:double"/>
+            <xsd:element name="altura" type="xsd:double"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PerimetroRectanguloResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="perimetro" type="xsd:double"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+    </xsd:schema>
+  </types>
+
+  <!-- 2. MENSAJES: entrada y salida de cada operación -->
+  <message name="AreaRectanguloSoapIn">
+    <part name="parameters" element="tns:AreaRectangulo"/>
+  </message>
+  <message name="AreaRectanguloSoapOut">
+    <part name="parameters" element="tns:AreaRectanguloResponse"/>
+  </message>
+  <message name="PerimetroRectanguloSoapIn">
+    <part name="parameters" element="tns:PerimetroRectangulo"/>
+  </message>
+  <message name="PerimetroRectanguloSoapOut">
+    <part name="parameters" element="tns:PerimetroRectanguloResponse"/>
+  </message>
+
+  <!-- 3. PORT TYPE: operaciones y su correspondencia con los mensajes -->
+  <portType name="GeometriaPortType">
+    <operation name="AreaRectangulo">
+      <input message="tns:AreaRectanguloSoapIn"/>
+      <output message="tns:AreaRectanguloSoapOut"/>
+    </operation>
+    <operation name="PerimetroRectangulo">
+      <input message="tns:PerimetroRectanguloSoapIn"/>
+      <output message="tns:PerimetroRectanguloSoapOut"/>
+    </operation>
+  </portType>
+
+  <!-- 4. BINDING: vinculación con SOAP -->
+  <binding name="GeometriaBinding" type="tns:GeometriaPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="AreaRectangulo">
+      <soap:operation soapAction="http://practica.soap/geometria/AreaRectangulo"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+    <operation name="PerimetroRectangulo">
+      <soap:operation soapAction="http://practica.soap/geometria/PerimetroRectangulo"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+
+  <!-- 5. SERVICE: nombre del servicio y dirección HTTP del endpoint -->
+  <service name="GeometriaService">
+    <port name="GeometriaPort" binding="tns:GeometriaBinding">
+      <soap:address location="http://localhost:3000/soap/geometria"/>
+    </port>
+  </service>
+
+</definitions>
